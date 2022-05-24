@@ -25,6 +25,7 @@ project/plugins/project/
 .cache
 .settings
 .vscode
+*.code-workspace
 
 # IntelliJ specific
 .idea/
