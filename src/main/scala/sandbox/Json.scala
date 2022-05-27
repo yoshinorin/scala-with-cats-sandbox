@@ -28,6 +28,16 @@ object JsonWriterInstances {
           "email" -> JsString(value.email)
         ))
     }
+
+  implicit def optionWriter[A](implicit writer: JsonWriter[A]):
+    JsonWriter[Option[A]] = new
+      JsonWriter[Option[A]] {
+        def write(option: Option[A]): Json =
+          option match {
+            case Some(aValue) => writer.write(aValue)
+            case None => JsNull
+          }
+  }
 }
 
 object Json {

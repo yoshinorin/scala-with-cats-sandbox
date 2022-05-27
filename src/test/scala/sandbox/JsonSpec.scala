@@ -23,4 +23,10 @@ class JsonSpec extends AnyWordSpec {
   println(implicitly[JsonWriter[String]])
   // sandbox.JsonWriterInstances$$anon$1@3d408778
 
+  val oa1 = Json.toJson(Option("A string"))
+  println(oa1)
+
+  val oa2 = Json.toJson(Option("A string"))(optionWriter[String])
+  println(oa2)
+
 }
