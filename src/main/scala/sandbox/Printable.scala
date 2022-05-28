@@ -44,5 +44,3 @@ object PrintableSyntax {
     def print(implicit p: Printable[A]): Unit = println(p.format(value))
   }
 }
-
-final case class Cat(name: String, age: Int, color: String)
