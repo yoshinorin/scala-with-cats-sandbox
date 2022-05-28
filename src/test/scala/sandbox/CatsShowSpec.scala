@@ -24,4 +24,7 @@ class CatsShowSpec extends AnyWordSpec {
 
   val d = new Date().show
   println(d)
+
+  val cat = Cat("Nyao", 9, "White")
+  println(cat.show)
 }
