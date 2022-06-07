@@ -2,6 +2,7 @@ package sandbox
 
 import org.scalatest.wordspec.AnyWordSpec
 import BooleanMonoidInstances._
+import SetMonoidInstances._
 
 // testOnly sandbox.MonoidSpec
 class MonoidSpec extends AnyWordSpec {
@@ -33,4 +34,20 @@ class MonoidSpec extends AnyWordSpec {
   println(booleanXnorMonoid.combine(true, false))
   println(booleanXnorMonoid.combine(false, true))
   println(booleanXnorMonoid.combine(false, false))
+
+  // SetMonoid
+  println("========== SetUnionMonoid")
+  println(setUnionMonoid.combine(Set(1,2), Set(1,2,3)))
+  println(setUnionMonoid.combine(Set("A", "B"), Set("B", "C")))
+
+  // SetSemigroup
+  println("========== setIntersectionSemigroup")
+  println(setIntersectionSemigroup.combine(Set(1,2,3), Set(1)))
+  println(setIntersectionSemigroup.combine(Set("A", "B"), Set("B", "C")))
+
+  // symmetricDiffMonoid
+  println("========== symmetricDiffMonoid")
+  println(symmetricDiffMonoid.combine(Set(1,2,3), Set(1)))
+  println(symmetricDiffMonoid.combine(Set("A", "B"), Set("B", "C")))
+
 }

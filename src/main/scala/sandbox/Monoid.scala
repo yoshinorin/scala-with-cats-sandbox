@@ -8,6 +8,10 @@ trait Monoid[A] extends Semigroup[A] {
   def empty: A
 }
 
+object Semigroup {
+  def apply[A](implicit semigroup: Semigroup[A]) = semigroup
+}
+
 object Monoid {
   def apply[A](implicit monoid: Monoid[A]) = monoid
 }
@@ -38,3 +42,21 @@ object BooleanMonoidInstances {
     }
 }
 
+object SetMonoidInstances {
+
+  implicit def setUnionMonoid[A]: Monoid[Set[A]] = new Monoid[Set[A]] {
+    def combine(x: Set[A], y: Set[A]): Set[A] = x union y
+    def empty: Set[A] = Set.empty[A]
+  }
+
+  implicit def setIntersectionSemigroup[A]: Semigroup[Set[A]] =
+    new Semigroup[Set[A]] {
+      def combine(x: Set[A], y: Set[A]): Set[A] = x intersect y
+    }
+
+  implicit def symmetricDiffMonoid[A]: Monoid[Set[A]] =
+    new Monoid[Set[A]] {
+      def combine(x: Set[A], y: Set[A]): Set[A] = (x diff y) union (y diff x)
+      def empty: Set[A] = Set.empty
+    }
+}
