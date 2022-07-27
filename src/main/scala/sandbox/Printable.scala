@@ -1,5 +1,7 @@
 package sandbox
 
+final case class Box[A](value: A)
+
 trait Printable[A] { self =>
   def format(value: A): String
 
@@ -11,11 +13,33 @@ trait Printable[A] { self =>
 
 object PrintableInstances {
 
+  /*
+    contramap を使用せずに完全に定義した場合
+
+  implicit def boxPrintable[A](
+      implicit p: Printable[A]
+  ): Printable[Box[A]] =
+    new Printable[Box[A]] {
+      def format(box: Box[A]): String = p.format(box.value)
+    }
+  */
+
+  // contramap を使用した場合
+  implicit def boxPrintable[A](implicit p: Printable[A]): Printable[Box[A]] = {
+    p.contramap[Box[A]](_.value)
+  }
+
   implicit val stringPrintable: Printable[String] = {
     new Printable[String] {
       def format(value: String): String = value
     }
   }
+
+  implicit val booleanPrintable: Printable[Boolean] =
+    new Printable[Boolean] {
+      def format(value: Boolean): String =
+        if(value) "yes" else "no"
+    }
 
   implicit val intPrintable: Printable[Int] = {
     new Printable[Int] {
