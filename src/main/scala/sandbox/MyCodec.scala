@@ -2,10 +2,17 @@ package sandbox
 
 object MyCodec {
 
-  trait Codec[A] {
+  final case class Box[A](value: A)
+
+  trait Codec[A] { self =>
     def encode(value: A): String
     def decode(value: String): A
-    def imap[B](dec: A => B, enc: B => A): Codec[B] = ???
+    def imap[B](dec: A => B, enc: B => A): Codec[B] = {
+      new Codec[B] {
+        def encode(value: B): String = self.encode(enc(value))
+        def decode(value: String): B = dec(self.decode(value))
+      }
+    }
   }
 
   def encode[A](value: A)(implicit c: Codec[A]): String = c.encode(value)
@@ -25,6 +32,12 @@ object MyCodec {
 
   implicit val booleanCodec: Codec[Boolean] =
     stringCodec.imap(_.toBoolean, _.toString)
+
+  implicit val doubleCodec: Codec[Double] =
+    stringCodec.imap(_.toDouble, _.toString)
+
+  implicit def boxCodec[A](implicit c: Codec[A]): Codec[Box[A]] =
+    c.imap[Box[A]](Box(_), _.value)
 
 }
 
