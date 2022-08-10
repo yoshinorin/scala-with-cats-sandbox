@@ -4,7 +4,11 @@ import org.scalatest.wordspec.AnyWordSpec
 import cats.Functor
 import CatsFunctor._
 import cats.Show
+import cats.Monoid
 import cats.syntax.contravariant._ // for contramap
+import cats.instances.string._ // for Monoid
+import cats.syntax.invariant._ // for imap
+import cats.syntax.semigroup._ // for |+|
 
 // testOnly sandbox.CatsFunctorSpec
 class CatsFunctorSpec extends AnyWordSpec {
@@ -38,4 +42,11 @@ class CatsFunctorSpec extends AnyWordSpec {
 
   showString.contramap[Symbol](sym => s"'${sym.name}").show(Symbol("dave"))
 
+  implicit val symbolMonoid: Monoid[Symbol] = Monoid[String].imap(Symbol.apply)(_.name)
+
+  Monoid[Symbol].empty
+  // res3: Symbol = '
+
+  Symbol("a") |+| Symbol("few") |+| Symbol("words")
+  // res4: Symbol = 'afewwords
 }
