@@ -26,3 +26,11 @@ object CatsFunctor {
     start.map(n => n + 1 * 2)
 
 }
+
+trait Contravariant[F[_]] {
+  def contramap[A, B](fa: F[A])(f: B => A): F[A]
+}
+
+trait Invariant[F[_]] {
+  def imap[A, B](fa: F[A])(f: A => B)(g: B => A): F[B]
+}

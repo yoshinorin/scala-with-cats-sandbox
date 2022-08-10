@@ -3,6 +3,8 @@ package sandbox
 import org.scalatest.wordspec.AnyWordSpec
 import cats.Functor
 import CatsFunctor._
+import cats.Show
+import cats.syntax.contravariant._ // for contramap
 
 // testOnly sandbox.CatsFunctorSpec
 class CatsFunctorSpec extends AnyWordSpec {
@@ -28,5 +30,12 @@ class CatsFunctorSpec extends AnyWordSpec {
   // println(doMath(20))
   println(doMath(Option(120)))
   println(doMath(List(1,2,4,8)))
+
+  println("============ contramap")
+  val showString = Show[String]
+  val showSymbol = cats.Contravariant[Show].contramap(showString)((sym: Symbol) => s"'${sym.name}")
+  println(showSymbol.show(Symbol("dave")))
+
+  showString.contramap[Symbol](sym => s"'${sym.name}").show(Symbol("dave"))
 
 }
