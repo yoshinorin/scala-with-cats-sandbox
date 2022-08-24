@@ -8,6 +8,8 @@ import scala.concurrent.ExecutionContext.Implicits.global // futureモナド向�
 import scala.concurrent.Future
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
+import cats.syntax.applicative._ // for pure
+import sandbox.CatsMonad._
 
 // testOnly sandbox.CatsMonadSpec
 class CatsMonadSpec extends AnyWordSpec {
@@ -24,5 +26,14 @@ class CatsMonadSpec extends AnyWordSpec {
   val fm = Monad[Future]
   val future = fm.flatMap(fm.pure(1))(x => fm.pure(x + 2))
   Await.result(future, Duration.Inf)
+
+  1.pure[Option]
+  1.pure[List]
+
+  // cats.instances.option._ をインポートしているので引数 `F[_]: Monad` に Option を渡すことができる
+  sumSquare(Option(3), Option(4))
+  // 同様
+  sumSquare(List(1, 2, 3), List(4, 5))
+
 
 }
