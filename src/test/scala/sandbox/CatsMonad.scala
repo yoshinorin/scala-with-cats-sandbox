@@ -10,6 +10,9 @@ import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 import cats.syntax.applicative._ // for pure
 import sandbox.CatsMonad._
+import cats.Id
+import cats.syntax.functor._ // for map
+import cats.syntax.flatMap._ // for flatMap
 
 // testOnly sandbox.CatsMonadSpec
 class CatsMonadSpec extends AnyWordSpec {
@@ -35,5 +38,13 @@ class CatsMonadSpec extends AnyWordSpec {
   // 同様
   sumSquare(List(1, 2, 3), List(4, 5))
 
+  sumSquare(3 : Id[Int], 4 : Id[Int])
 
+  val a = Monad[Id].pure(3)
+  val b = Monad[Id].flatMap(a)(_ + 1)
+
+  for {
+    x <- a
+    y <- b
+  } yield x + y
 }
