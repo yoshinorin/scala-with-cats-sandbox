@@ -2,6 +2,8 @@ package sandbox
 
 import org.scalatest.wordspec.AnyWordSpec
 import cats.syntax.either._ // for asRight
+import sandbox.CatsEither._
+import scala.util.Try
 
 // testOnly sandbox.CatsEitherSpec
 class CatsEitherSpec extends AnyWordSpec {
@@ -45,4 +47,8 @@ class CatsEitherSpec extends AnyWordSpec {
     c <- if (b == 0) "DIV0".asLeft[Int]
          else (a / b).asRight[String]
   } yield c * 100
+
+  validateAdult[Try](18)
+  validateAdult[Try](8)
+  validateAdult[ExceptionOr](-1)
 }
