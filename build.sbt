@@ -1,7 +1,7 @@
 name := "cats-sandbox"
 version := "0.0.1-SNAPSHOT"
 
-scalaVersion := "2.13.6"
+scalaVersion := "2.13.8"
 
 scalacOptions ++= Seq(
   "-Yrangepos",
