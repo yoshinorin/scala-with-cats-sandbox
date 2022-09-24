@@ -6,6 +6,8 @@ import cats.instances.vector._ // for Monoid
 import cats.syntax.applicative._ // for pure
 import cats.syntax.writer._ // for writer
 
+import sandbox.CatsWriter._
+
 // testOnly sandbox.CatsWriterSpec
 class CatsWriterSpec extends AnyWordSpec {
 
@@ -24,4 +26,26 @@ class CatsWriterSpec extends AnyWordSpec {
 
   val aResult: Int = a.value
   val aLog: Vector[String] = a.written
+
+  val writer1 = for {
+    a <- 10.pure[Logged]
+    _ <- Vector("a", "b", "c").tell
+    b <- 32.writer(Vector("x", "y", "z"))
+  } yield a + b
+
+  val writer2 = writer1.mapWritten(_.map(_.toUpperCase())).run
+
+  val writer3 = writer1.bimap(
+    log => log.map(_.toUpperCase),
+    res => res * 100
+  ).run
+
+  val writer4 = writer1.mapBoth { (log, res) =>
+    val log2 = log.map(_ + "!")
+    val res2 = res * 1000
+    (log2, res2)
+  }.run
+
+  println(factorial(5))
+
 }
