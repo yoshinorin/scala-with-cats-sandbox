@@ -1,7 +1,7 @@
 name := "cats-sandbox"
 version := "0.0.1-SNAPSHOT"
 
-scalaVersion := "2.13.8"
+scalaVersion := "2.13.10"
 
 scalacOptions ++= Seq(
   "-Yrangepos",
@@ -18,8 +18,8 @@ scalacOptions --= Seq(
 )
 
 libraryDependencies ++= Seq(
-  "org.typelevel" %% "cats-core" % "2.7.0",
-  "org.scalatest" %% "scalatest" % "3.2.11" % "test"
+  "org.typelevel" %% "cats-core" % "2.9.0",
+  "org.scalatest" %% "scalatest" % "3.2.14" % "test"
 )
 
 // scalac options come from the sbt-tpolecat plugin so need to set any here
